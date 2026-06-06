@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>RO'Lyfe Deal Desk OS v1 (Money Room Edition)</title>
+<title>RO'Lyfe Deal Desk OS v1 - Money Room System</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -18,7 +18,6 @@ padding:14px;
 background:#151925;
 text-align:center;
 font-weight:bold;
-font-size:15px;
 }
 
 .container{
@@ -42,12 +41,12 @@ color:#00d4ff;
 margin-bottom:8px;
 }
 
-input, select, button, textarea{
+input, select, button{
 width:100%;
 padding:10px;
 margin:5px 0;
-border-radius:6px;
 border:none;
+border-radius:6px;
 font-size:13px;
 }
 
@@ -57,12 +56,10 @@ font-weight:bold;
 cursor:pointer;
 }
 
-button:hover{opacity:0.85;}
-
 .small{font-size:11px;opacity:0.7}
 
 /* 🔥 PIPELINE SCROLL FIX */
-.pipeline-wrapper{
+.pipeline-wrap{
 overflow-x:auto;
 white-space:nowrap;
 border:1px solid #222;
@@ -70,7 +67,7 @@ border-radius:10px;
 }
 
 table{
-min-width:900px;
+min-width:1100px;
 border-collapse:collapse;
 font-size:11px;
 }
@@ -79,33 +76,50 @@ th,td{
 padding:6px;
 border-bottom:1px solid #333;
 white-space:nowrap;
-text-align:left;
 }
 
 .green{color:#00ff99;}
 .yellow{color:#ffcc00;}
 .red{color:#ff4d4d;}
 
-.stage{
-font-weight:bold;
-}
-
+a{color:#00d4ff;}
 </style>
 </head>
 
 <body>
 
-<header>RO'Lyfe DEAL DESK OS v1 — Money Room Edition</header>
+<header>RO'Lyfe DEAL DESK OS v1 — MONEY ROOM EDITION</header>
 
 <div class="container">
 
-<!-- INPUT -->
+<!-- 📥 APPLICATION GATE -->
+<div class="card">
+<h2>📥 Required Application (Before Deal Review)</h2>
+
+<p class="small">
+No application = no underwriting. This is your capital gate.
+</p>
+
+<a href="https://form.jotform.com/261416399941062" target="_blank">
+<button>Open Loan Application</button>
+</a>
+
+<a href="https://form.jotform.com/253154859148062" target="_blank">
+<button>Upload Documents</button>
+</a>
+
+<p class="small">
+Loan Officer Policy + Intake Required Before Processing
+</p>
+</div>
+
+<!-- 📥 DEAL INTAKE -->
 <div class="card">
 <h2>📥 Deal Intake</h2>
 
 <input id="address" placeholder="Property Address">
 <input id="purchase" placeholder="Purchase Price">
-<input id="arv" placeholder="ARV (or estimate)">
+<input id="arv" placeholder="ARV Estimate">
 <input id="lead" placeholder="Lead Source (contractor/realtor/bee/direct)">
 
 <select id="stage">
@@ -117,12 +131,12 @@ font-weight:bold;
 
 <button onclick="addDeal()">Add Deal</button>
 
-<p class="small">CRM memory ON (browser storage)</p>
+<p class="small">CRM memory active (browser storage)</p>
 </div>
 
-<!-- REHAB ENGINE -->
+<!-- 🛠 REHAB ENGINE (COGO STYLE) -->
 <div class="card">
-<h2>🛠 Contractor Rehab Generator</h2>
+<h2>🛠 Rehab COGO Estimate Engine</h2>
 
 <select id="rehabType">
 <option>Light Rehab</option>
@@ -130,30 +144,30 @@ font-weight:bold;
 <option>Heavy Rehab</option>
 </select>
 
-<input id="rehabCost" placeholder="Manual Rehab Override ($)">
+<input id="customRehab" placeholder="Override Rehab Cost (optional)">
 
-<button onclick="calcDeal()">Run Underwriting</button>
+<button onclick="runAnalysis()">Run Deal Analysis</button>
 
 <p id="analysis"></p>
 <p id="decision"></p>
 </div>
 
-<!-- ACTION -->
+<!-- ⚙️ SYSTEM LINKS -->
 <div class="card">
-<h2>⚙️ Capital Actions</h2>
+<h2>⚙️ RO’Lyfe Systems</h2>
 
-<button onclick="exportPDF()">Export Investor PDF</button>
-<button onclick="sendEmail('richman@rootoflyfe.com')">Email You</button>
-<button onclick="sendEmail('richprivatelender@gmail.com')">Email Lender</button>
+<a href="https://rolrichman.github.io/RO-Lyfe-Strategy-Arena-/" target="_blank">Strategy Arena</a><br>
+<a href="https://rolrichman.github.io/rolyfe-os/" target="_blank">RO’Lyfe OS</a><br>
+<a href="https://rolrichman.github.io/RO-Lyfe-Closers-OS/" target="_blank">Closers OS</a><br>
+<a href="https://rolrichman.github.io/rolyfe-contract-documents-hub/" target="_blank">Contract Hub</a>
 
-<p class="small">Decision → Export → Capital</p>
 </div>
 
-<!-- PIPELINE -->
+<!-- 📊 PIPELINE -->
 <div class="card" style="flex-basis:100%">
-<h2>📊 Pipeline (Swipe → Scroll → Move Deals)</h2>
+<h2>📊 Deal Pipeline (Swipe / Scroll Enabled)</h2>
 
-<div class="pipeline-wrapper">
+<div class="pipeline-wrap">
 <table>
 <thead>
 <tr>
@@ -180,18 +194,19 @@ font-weight:bold;
 
 let deals = JSON.parse(localStorage.getItem("deals") || "[]");
 
-/* 🔧 SIMPLE REHAB ENGINE */
+/* 🧠 REHAB ENGINE (COGO STYLE SIMPLIFIED) */
 function rehabEngine(type){
 if(type === "Light Rehab") return 15000;
 if(type === "Medium Rehab") return 40000;
 return 80000;
 }
 
-function clean(n){
-let x = parseFloat(n);
-return isNaN(x) ? null : x;
+function clean(v){
+let n = parseFloat(v);
+return isNaN(n) ? null : n;
 }
 
+/* 📥 ADD DEAL */
 function addDeal(){
 
 let d = {
@@ -200,27 +215,29 @@ purchase: clean(document.getElementById("purchase").value),
 arv: clean(document.getElementById("arv").value),
 lead: document.getElementById("lead").value || "unknown",
 stage: document.getElementById("stage").value,
-rehab: clean(document.getElementById("rehabCost").value) || rehabEngine(document.getElementById("rehabType").value)
+rehab: clean(document.getElementById("customRehab").value) || rehabEngine(document.getElementById("rehabType").value)
 };
 
 if(!d.address || !d.purchase || !d.arv){
-alert("Missing core data");
+alert("Missing required fields");
 return;
 }
 
 deals.push(d);
-save();
+localStorage.setItem("deals", JSON.stringify(deals));
+
 render();
 }
 
-function calcDeal(){
+/* 🧠 ANALYSIS ENGINE */
+function runAnalysis(){
 
 let p = clean(document.getElementById("purchase").value);
 let a = clean(document.getElementById("arv").value);
-let r = clean(document.getElementById("rehabCost").value) || rehabEngine(document.getElementById("rehabType").value);
+let r = clean(document.getElementById("customRehab").value) || rehabEngine(document.getElementById("rehabType").value);
 
 if(!p || !a){
-document.getElementById("analysis").innerHTML = "Fix inputs";
+document.getElementById("analysis").innerHTML = "Fix inputs first";
 return;
 }
 
@@ -233,11 +250,12 @@ document.getElementById("analysis").innerHTML =
 let status =
 spread > 30000 ? "🟢 ASSIGNABLE" :
 spread > 10000 ? "🟡 REVIEW" :
-"🔴 KILL";
+"🔴 KILL DEAL";
 
 document.getElementById("decision").innerHTML = status;
 }
 
+/* 📊 PIPELINE RENDER */
 function render(){
 
 let html = "";
@@ -257,7 +275,7 @@ html += `
 <tr>
 <td>${d.address}</td>
 <td>${d.lead}</td>
-<td class="stage">${d.stage}</td>
+<td>${d.stage}</td>
 <td>$${d.purchase.toLocaleString()}</td>
 <td>$${d.arv.toLocaleString()}</td>
 <td>$${d.rehab.toLocaleString()}</td>
@@ -270,28 +288,9 @@ html += `
 document.getElementById("pipeline").innerHTML = html;
 }
 
-function save(){
-localStorage.setItem("deals", JSON.stringify(deals));
-}
-
-/* 📄 SIMPLE PDF EXPORT */
-function exportPDF(){
-let win = window.open();
-win.document.write("<h2>RO'Lyfe Deal Sheet</h2>");
-deals.forEach(d=>{
-win.document.write(`<p>${d.address} | Buy: $${d.purchase} | ARV: $${d.arv} | Rehab: $${d.rehab}</p>`);
-});
-win.print();
-}
-
-function sendEmail(email){
-window.location.href =
-`mailto:${email}?subject=RO'Lyfe Deal&body=New deal ready for review`;
-}
-
 render();
 
 </script>
 
 </body>
-  </html>
+</html>
