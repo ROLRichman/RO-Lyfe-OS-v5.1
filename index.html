@@ -6,29 +6,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body {
+body{
 margin:0;
 font-family:Arial;
 background:#0f1115;
 color:#fff;
 }
 
-header {
-padding:15px;
+header{
+padding:14px;
 background:#151925;
 text-align:center;
-font-size:16px;
 font-weight:bold;
+font-size:15px;
 }
 
-.container {
+.container{
 display:flex;
 flex-wrap:wrap;
-gap:15px;
-padding:15px;
+gap:12px;
+padding:12px;
 }
 
-.card {
+.card{
 background:#1b2130;
 padding:12px;
 border-radius:10px;
@@ -36,48 +36,60 @@ flex:1;
 min-width:280px;
 }
 
-h2 { font-size:14px; color:#00d4ff; margin-bottom:8px; }
+h2{
+font-size:13px;
+color:#00d4ff;
+margin-bottom:8px;
+}
 
-input, select, button {
+input, select, button, textarea{
 width:100%;
 padding:10px;
 margin:5px 0;
 border-radius:6px;
 border:none;
-outline:none;
-font-size:14px;
+font-size:13px;
 }
 
-button {
+button{
 background:#00d4ff;
 font-weight:bold;
 cursor:pointer;
 }
 
-button:hover { opacity:0.85; }
+button:hover{opacity:0.85;}
 
-table {
-width:100%;
+.small{font-size:11px;opacity:0.7}
+
+/* 🔥 PIPELINE SCROLL FIX */
+.pipeline-wrapper{
+overflow-x:auto;
+white-space:nowrap;
+border:1px solid #222;
+border-radius:10px;
+}
+
+table{
+min-width:900px;
 border-collapse:collapse;
 font-size:11px;
 }
 
-th, td {
-border-bottom:1px solid #333;
+th,td{
 padding:6px;
-text-align:left;
+border-bottom:1px solid #333;
 white-space:nowrap;
+text-align:left;
 }
 
-.green { color:#00ff99; }
-.yellow { color:#ffcc00; }
-.red { color:#ff4d4d; }
+.green{color:#00ff99;}
+.yellow{color:#ffcc00;}
+.red{color:#ff4d4d;}
 
-.small { font-size:11px; opacity:0.7; }
-
-@media (orientation: portrait) {
-table { font-size:10px; }
+.stage{
+font-weight:bold;
 }
+
 </style>
 </head>
 
@@ -87,59 +99,78 @@ table { font-size:10px; }
 
 <div class="container">
 
-<!-- INTKE -->
+<!-- INPUT -->
 <div class="card">
 <h2>📥 Deal Intake</h2>
 
 <input id="address" placeholder="Property Address">
 <input id="purchase" placeholder="Purchase Price">
-<input id="arv" placeholder="ARV">
-<input id="rehab" placeholder="Rehab Cost">
+<input id="arv" placeholder="ARV (or estimate)">
+<input id="lead" placeholder="Lead Source (contractor/realtor/bee/direct)">
+
+<select id="stage">
+<option>UNDERWRITING</option>
+<option>SENT</option>
+<option>NEGOTIATION</option>
+<option>CLOSED</option>
+</select>
 
 <button onclick="addDeal()">Add Deal</button>
 
-<p class="small">Only clean numbers enter the system.</p>
+<p class="small">CRM memory ON (browser storage)</p>
 </div>
 
-<!-- ANALYSIS -->
+<!-- REHAB ENGINE -->
 <div class="card">
-<h2>🧠 Deal Analyzer</h2>
+<h2>🛠 Contractor Rehab Generator</h2>
 
-<button onclick="calcDeal()">Run Analysis</button>
+<select id="rehabType">
+<option>Light Rehab</option>
+<option>Medium Rehab</option>
+<option>Heavy Rehab</option>
+</select>
 
-<p id="output"></p>
+<input id="rehabCost" placeholder="Manual Rehab Override ($)">
+
+<button onclick="calcDeal()">Run Underwriting</button>
+
+<p id="analysis"></p>
 <p id="decision"></p>
 </div>
 
 <!-- ACTION -->
 <div class="card">
-<h2>⚙️ Actions</h2>
+<h2>⚙️ Capital Actions</h2>
 
-<button onclick="sendEmail('richman@rootoflyfe.com')">Email Me</button>
+<button onclick="exportPDF()">Export Investor PDF</button>
+<button onclick="sendEmail('richman@rootoflyfe.com')">Email You</button>
 <button onclick="sendEmail('richprivatelender@gmail.com')">Email Lender</button>
-<button onclick="window.print()">Export Deal</button>
 
-<p class="small">Decision layer → communication layer → capital layer</p>
+<p class="small">Decision → Export → Capital</p>
 </div>
 
 <!-- PIPELINE -->
 <div class="card" style="flex-basis:100%">
-<h2>📊 Deal Pipeline</h2>
+<h2>📊 Pipeline (Swipe → Scroll → Move Deals)</h2>
 
+<div class="pipeline-wrapper">
 <table>
 <thead>
 <tr>
 <th>Address</th>
+<th>Source</th>
+<th>Stage</th>
 <th>Buy</th>
 <th>ARV</th>
 <th>Rehab</th>
+<th>Total</th>
 <th>Spread</th>
 <th>Status</th>
 </tr>
 </thead>
-
 <tbody id="pipeline"></tbody>
 </table>
+</div>
 
 </div>
 
@@ -149,79 +180,90 @@ table { font-size:10px; }
 
 let deals = JSON.parse(localStorage.getItem("deals") || "[]");
 
-function cleanNumber(val){
-let n = parseFloat(val);
-return isNaN(n) ? null : n;
+/* 🔧 SIMPLE REHAB ENGINE */
+function rehabEngine(type){
+if(type === "Light Rehab") return 15000;
+if(type === "Medium Rehab") return 40000;
+return 80000;
 }
 
-function addDeal() {
+function clean(n){
+let x = parseFloat(n);
+return isNaN(x) ? null : x;
+}
 
-let deal = {
+function addDeal(){
+
+let d = {
 address: document.getElementById("address").value.trim(),
-purchase: cleanNumber(document.getElementById("purchase").value),
-arv: cleanNumber(document.getElementById("arv").value),
-rehab: cleanNumber(document.getElementById("rehab").value)
+purchase: clean(document.getElementById("purchase").value),
+arv: clean(document.getElementById("arv").value),
+lead: document.getElementById("lead").value || "unknown",
+stage: document.getElementById("stage").value,
+rehab: clean(document.getElementById("rehabCost").value) || rehabEngine(document.getElementById("rehabType").value)
 };
 
-// 🚫 block garbage entries
-if(!deal.address || !deal.purchase || !deal.arv || deal.rehab === null){
-alert("Incomplete deal. Fix inputs before adding.");
+if(!d.address || !d.purchase || !d.arv){
+alert("Missing core data");
 return;
 }
 
-deals.push(deal);
+deals.push(d);
 save();
 render();
 }
 
-function calcDeal() {
+function calcDeal(){
 
-let purchase = cleanNumber(document.getElementById("purchase").value);
-let arv = cleanNumber(document.getElementById("arv").value);
-let rehab = cleanNumber(document.getElementById("rehab").value);
+let p = clean(document.getElementById("purchase").value);
+let a = clean(document.getElementById("arv").value);
+let r = clean(document.getElementById("rehabCost").value) || rehabEngine(document.getElementById("rehabType").value);
 
-if(!purchase || !arv || rehab === null){
-document.getElementById("output").innerHTML = "Fix inputs first.";
+if(!p || !a){
+document.getElementById("analysis").innerHTML = "Fix inputs";
 return;
 }
 
-let totalCost = purchase + rehab;
-let spread = arv - totalCost;
+let total = p + r;
+let spread = a - total;
 
-document.getElementById("output").innerHTML =
-`Total Cost: $${totalCost.toLocaleString()}<br>Spread: $${spread.toLocaleString()}`;
+document.getElementById("analysis").innerHTML =
+`Total Cost: $${total.toLocaleString()}<br>Spread: $${spread.toLocaleString()}`;
 
 let status =
 spread > 30000 ? "🟢 ASSIGNABLE" :
 spread > 10000 ? "🟡 REVIEW" :
-"🔴 KILL DEAL";
+"🔴 KILL";
 
 document.getElementById("decision").innerHTML = status;
 }
 
-function render() {
+function render(){
 
 let html = "";
 
-deals.forEach(d => {
+deals.forEach(d=>{
 
-if(!d.address || !d.purchase || !d.arv || d.rehab === null) return;
+if(!d.address || !d.purchase || !d.arv) return;
 
-let spread = d.arv - (d.purchase + d.rehab);
+let total = d.purchase + d.rehab;
+let spread = d.arv - total;
 
-let statusClass =
+let color =
 spread > 30000 ? "green" :
-spread > 10000 ? "yellow" :
-"red";
+spread > 10000 ? "yellow" : "red";
 
 html += `
 <tr>
 <td>${d.address}</td>
+<td>${d.lead}</td>
+<td class="stage">${d.stage}</td>
 <td>$${d.purchase.toLocaleString()}</td>
 <td>$${d.arv.toLocaleString()}</td>
 <td>$${d.rehab.toLocaleString()}</td>
+<td>$${total.toLocaleString()}</td>
 <td>$${spread.toLocaleString()}</td>
-<td class="${statusClass}">${statusClass.toUpperCase()}</td>
+<td class="${color}">${color.toUpperCase()}</td>
 </tr>`;
 });
 
@@ -232,8 +274,19 @@ function save(){
 localStorage.setItem("deals", JSON.stringify(deals));
 }
 
+/* 📄 SIMPLE PDF EXPORT */
+function exportPDF(){
+let win = window.open();
+win.document.write("<h2>RO'Lyfe Deal Sheet</h2>");
+deals.forEach(d=>{
+win.document.write(`<p>${d.address} | Buy: $${d.purchase} | ARV: $${d.arv} | Rehab: $${d.rehab}</p>`);
+});
+win.print();
+}
+
 function sendEmail(email){
-window.location.href = `mailto:${email}?subject=RO'Lyfe Deal Submission&body=New deal ready for review`;
+window.location.href =
+`mailto:${email}?subject=RO'Lyfe Deal&body=New deal ready for review`;
 }
 
 render();
@@ -241,4 +294,4 @@ render();
 </script>
 
 </body>
-</html>
+  </html>
