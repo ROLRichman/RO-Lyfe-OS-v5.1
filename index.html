@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RO'Lyfe Deal Desk OS v1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body { font-family: Arial; margin: 0; background:#0f1115; color:#fff; }
+header { padding: 20px; background:#151925; text-align:center; font-size:20px; font-weight:bold; }
+.container { display:flex; flex-wrap:wrap; gap:20px; padding:20px; }
+
+.card { background:#1b2130; padding:15px; border-radius:10px; flex:1; min-width:300px; }
+h2 { font-size:16px; margin-bottom:10px; color:#00d4ff; }
+
+input, select, button, textarea {
+width:100%; padding:10px; margin:5px 0; border-radius:6px;
+border:none; outline:none;
+}
+
+button { background:#00d4ff; color:#000; font-weight:bold; cursor:pointer; }
+button:hover { opacity:0.8; }
+
+table { width:100%; border-collapse:collapse; font-size:12px; }
+th, td { border-bottom:1px solid #333; padding:6px; text-align:left; }
+
+.status { font-weight:bold; }
+.green { color:#00ff99; }
+.yellow { color:#ffcc00; }
+.red { color:#ff4d4d; }
+
+.small { font-size:12px; opacity:0.8; }
+</style>
+</head>
+
+<body>
+
+<header>RO'Lyfe DEAL DESK OS v1 — Build. Analyze. Assign. Close.</header>
+
+<div class="container">
+
+<!-- INTAKE -->
+<div class="card">
+<h2>📥 Deal Intake</h2>
+
+<input id="address" placeholder="Property Address">
+<input id="purchase" placeholder="Purchase Price">
+<input id="arv" placeholder="ARV (After Repair Value)">
+<select id="condition">
+<option>Light Rehab</option>
+<option>Medium Rehab</option>
+<option>Heavy Rehab</option>
+</select>
+
+<button onclick="addDeal()">Add Deal</button>
+
+<p class="small">Every deal enters here. No exceptions.</p>
+</div>
+
+<!-- REHAB CALCULATOR -->
+<div class="card">
+<h2>🛠 Rehab Calculator</h2>
+
+<input id="rehab" placeholder="Total Rehab Cost">
+
+<button onclick="calcDeal()">Run Analysis</button>
+
+<p id="output"></p>
+</div>
+
+<!-- DECISION PANEL -->
+<div class="card">
+<h2>🧠 Decision Engine</h2>
+<p id="decision">Waiting for analysis...</p>
+
+<button onclick="sendEmail('richman@rootoflyfe.com')">Email Richman</button>
+<button onclick="sendEmail('richprivatelender@gmail.com')">Email Private Lender</button>
+<button onclick="window.print()">Export / Print Deal</button>
+</div>
+
+<!-- PIPELINE -->
+<div class="card" style="flex-basis:100%">
+<h2>📊 Deal Pipeline</h2>
+
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>Purchase</th>
+<th>ARV</th>
+<th>Rehab</th>
+<th>Spread</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="pipeline"></tbody>
+</table>
+</div>
+
+</div>
+
+<script>
+let deals = JSON.parse(localStorage.getItem("deals") || "[]");
+
+function addDeal() {
+let deal = {
+address: document.getElementById("address").value,
+purchase: parseFloat(document.getElementById("purchase").value),
+arv: parseFloat(document.getElementById("arv").value),
+rehab: parseFloat(document.getElementById("rehab").value || 0)
+};
+
+deals.push(deal);
+save();
+render();
+}
+
+function calcDeal() {
+let purchase = parseFloat(document.getElementById("purchase").value);
+let arv = parseFloat(document.getElementById("arv").value);
+let rehab = parseFloat(document.getElementById("rehab").value || 0);
+
+let totalCost = purchase + rehab;
+let spread = arv - totalCost;
+
+let status = "";
+
+if (spread > 30000) status = "🟢 ASSIGNABLE";
+else if (spread > 10000) status = "🟡 REVIEW";
+else status = "🔴 KILL DEAL";
+
+document.getElementById("output").innerHTML =
+`Total Cost: $${totalCost.toLocaleString()}<br>Spread: $${spread.toLocaleString()}`;
+
+document.getElementById("decision").innerHTML = status;
+}
+
+function render() {
+let html = "";
+deals.forEach(d => {
+let spread = d.arv - (d.purchase + d.rehab);
+let status = spread > 30000 ? "green" : spread > 10000 ? "yellow" : "red";
+
+html += `
+<tr>
+<td>${d.address}</td>
+<td>$${d.purchase}</td>
+<td>$${d.arv}</td>
+<td>$${d.rehab}</td>
+<td>$${spread}</td>
+<td class="${status}">${status.toUpperCase()}</td>
+</tr>`;
+});
+
+document.getElementById("pipeline").innerHTML = html;
+}
+
+function save() {
+localStorage.setItem("deals", JSON.stringify(deals));
+}
+
+function sendEmail(email) {
+let subject = "RO'Lyfe Deal Submission";
+let body = "Review attached deal from RO'Lyfe OS.";
+window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+}
+
+render();
+</script>
+
+</body>
+</html>
