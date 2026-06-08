@@ -1233,3 +1233,96 @@ alert("Offers copied.");
 }
 
   </script>
+
+  <script>
+
+function runFundingCalc(){
+
+let loan =
+Number(document.getElementById("loanAmount").value)||0;
+
+let rate =
+(Number(document.getElementById("interestRate").value)||0)/100/12;
+
+let term =
+Number(document.getElementById("termMonths").value)||1;
+
+let collateral =
+Number(document.getElementById("collateral").value)||0;
+
+let income =
+Number(document.getElementById("monthlyIncome").value)||0;
+
+let debt =
+Number(document.getElementById("monthlyDebt").value)||0;
+
+let feePct =
+Number(document.getElementById("origination").value)||0;
+
+let payment =
+
+(loan*rate*Math.pow(1+rate,term))/
+(Math.pow(1+rate,term)-1);
+
+if(!isFinite(payment))
+payment=0;
+
+let ltv =
+collateral>0
+? ((loan/collateral)*100)
+: 0;
+
+let dscr =
+debt>0
+? (income/debt)
+: 0;
+
+let fees =
+loan*(feePct/100);
+
+document.getElementById("fundingResults").innerHTML=`
+
+<h3>📊 Funding Analysis</h3>
+
+<b>Monthly Payment</b><br>
+$${payment.toFixed(2)}
+
+<hr>
+
+<b>Origination Fees</b><br>
+$${fees.toLocaleString()}
+
+<hr>
+
+<b>LTV</b><br>
+${ltv.toFixed(1)}%
+
+<hr>
+
+<b>DSCR</b><br>
+${dscr.toFixed(2)}
+
+<hr>
+
+<b>Readiness</b><br>
+${dscr>=1.25 ? "✅ Strong" : "⚠ Review Needed"}
+
+`;
+
+}
+
+function resetFundingCalc(){
+
+document.getElementById("projectAmount").value="";
+document.getElementById("loanAmount").value="";
+document.getElementById("monthlyIncome").value="";
+document.getElementById("monthlyDebt").value="";
+document.getElementById("collateral").value="";
+
+document.getElementById("fundingResults").innerHTML=
+"Funding Analysis Waiting...";
+
+}
+
+  </script>
+  
