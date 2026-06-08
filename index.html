@@ -525,6 +525,87 @@ and calculate total rehab instantly.
 
 <div id="rehabGrid">
 
+<!-- ========================================= -->
+<!-- 3 TIER OFFER ENGINE -->
+<!-- ========================================= -->
+
+<section class="card">
+
+<h2>📊 3-TIER OFFER ENGINE</h2>
+
+<p>
+
+Use RO'Lyfe acquisition formulas to generate:
+
+• All Cash Offer
+
+• Seller Carry
+
+• Seller Finance
+
+</p>
+
+<div class="form-grid">
+
+<input
+id="offerArv"
+placeholder="ARV">
+
+<input
+id="offerRepair"
+placeholder="Repairs">
+
+<input
+id="offerDesiredProfit"
+value="50000"
+placeholder="Desired Profit">
+
+</div>
+
+<h3>Offer Settings</h3>
+
+<div class="form-grid">
+
+<input
+id="cashPercent"
+value="50"
+placeholder="Cash Offer %">
+
+<input
+id="sellerCarryPercent"
+value="65"
+placeholder="Seller Carry %">
+
+<input
+id="sellerFinancePercent"
+value="75"
+placeholder="Seller Finance %">
+
+</div>
+
+<div class="button-grid">
+
+<button onclick="runOfferEngine()">
+⚡ Generate Offers
+</button>
+
+<button onclick="copyOfferResults()">
+📋 Copy Offers
+</button>
+
+</div>
+
+<div
+id="offerResults"
+class="output-box"
+style="margin-top:15px;">
+
+Waiting for calculation...
+
+</div>
+
+</section>
+  
 <!-- REHAB ITEMS LOAD HERE -->
 
 </div>
