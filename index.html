@@ -802,3 +802,177 @@ now.toLocaleTimeString();
 },1000);
 
 </script>
+
+  <script>
+
+const rehabItems = [
+
+["264","Architect",0],
+["160","Asphalt & Paving",0],
+["848","Basement",0],
+["848","Basement (2)",0],
+["740","Bathroom Accessories / Mirror",0],
+["840","Bathroom Tile",0],
+["550","Bathroom Vanity & Countertop",0],
+["841","Bedroom Hardware",0],
+["352","Carpentry Rough",0],
+["700","Carpets",0],
+["418","Ceiling Work",0],
+["752","Closet / Shelves",0],
+["430","Concrete Material",0],
+["314","Contractor Contingency",0],
+["382","Curbs / Gutters / Walkways",0],
+["802","Decking / Porch / Patio",0],
+["384","Demolition",0],
+["492","Downspouts / Gutters",0],
+["388","Driveway",0],
+
+["704","Drywall / Tape / Texture / Sheetrock",15000],
+["213","Dumpster",2000],
+["672","Electrical Finish",0],
+["354","Electrical Labor",8000],
+["680","Electrical Rough",0],
+["600","Exterior Doors",2500],
+["706","Exterior Painting",0],
+["490","Fascia / Soffit",0],
+["708","Fencing",0],
+["270","Final Clean Up / Staging",0],
+["350","Finish Carpentry",0],
+["744","Finish Hardware",0],
+["400","Finish Labor / Site Work",0],
+["644","Fire Alarms",0],
+["464","Fireplace / Chimney",0],
+
+["710","Flooring / General / Sub",15000],
+
+["436","Footings / Foundation / Slab",0],
+
+["536","Framing Labor Rough Carpentry",15000],
+
+["534","Framing Lumber Material",0],
+["820","Garage",0],
+["602","Garage Door / Opener",0],
+["724","Hardwood Floors",0],
+
+["650","Heating-Air Conditioning HVAC",13000],
+
+["576","Insulation",0],
+["606","Interior Doors / Hardware",0],
+
+["712","Interior Painting",3000],
+
+["842","Kitchen",20000],
+
+["770","Kitchen Appliances",0],
+["530","Kitchen Cabinets",0],
+["702","Kitchen Counter Tops",0],
+["842","Kitchen Hardware",0],
+["494","Kitchen Sink",0],
+
+["398","Landscaping",0],
+
+["844","Laundry Room",0],
+["844","Laundry Room (2)",0],
+
+["646","Light Fixtures / Ceiling Fans",1200],
+
+["714","Linoleum / Vinyl / Laminate",0],
+["302","Management Supervised Fees",0],
+["466","Masonry / Veneer / Stone",0],
+["608","Mirrors & Accessories",0],
+["288","Misc",0],
+["OIL","Oil Tank Replacement",0],
+["356","Other Labor",0],
+
+["186","Permit Fees & Inspections",3000],
+
+["136","Plans",0],
+
+["642","Plumbing Finish",0],
+
+["360","Plumbing Labor",18000],
+
+["654","Plumbing Rough",0],
+
+["POOL","Pool",0],
+
+["298","Portable John",0],
+
+["278","Power Wash",0],
+
+["582","Roofing",12000],
+
+["406","Septic / Sewer",0],
+
+["552","Siding",8000],
+
+["614","Sinks Toilets Tubs Showers",3000],
+
+["198","Soil / Lead / Mold / Testing",0],
+
+["750","Stairs / Railings",1000],
+
+["510","Structural",15000],
+
+["718","Stucco & Plaster",0],
+
+["324","Temp Utilities",0],
+
+["720","Tile / Prep / Finish",0],
+
+["329","Trash Out",0],
+
+["548","Trusses / Beams",0],
+
+["416","Wall Work",0],
+
+["722","Wallpaper / Paneling",0],
+
+["412","Water Hook-up / Water Heater",1300],
+
+["618","Windows",8000]
+
+];
+
+let contingencyEnabled = false;
+
+function buildRehabGrid(){
+
+let html="";
+
+rehabItems.forEach((r,i)=>{
+
+html += `
+
+<div class="rehabRow">
+
+<input
+type="checkbox"
+id="rehabCheck${i}"
+>
+
+<span>
+
+${r[0]} - ${r[1]}
+
+</span>
+
+<input
+type="number"
+id="rehabCost${i}"
+value="${r[2]}"
+>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("rehabGrid").innerHTML = html;
+
+}
+
+buildRehabGrid();
+
+  </script>
