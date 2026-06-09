@@ -554,3 +554,404 @@ now.toLocaleTimeString();
 
 </body>
 </html>
+
+<!-- ========================================= -->
+<!-- PART 2 : CALCULATOR CENTER -->
+<!-- ========================================= -->
+
+<div class="card">
+
+<h2>🏦 RO'LYFE UNDERWRITING ENGINE</h2>
+
+<p>
+Analyze project cost, loan amount,
+cash-to-close, and projected profit.
+</p>
+
+<div class="dashboard">
+
+<div>
+
+<input id="uwPurchase" placeholder="Purchase Price">
+
+<input id="uwRehab" placeholder="Rehab Budget">
+
+<input id="uwAssignment" placeholder="Assignment Fee">
+
+<input id="uwClosing" placeholder="Closing Costs">
+
+<input id="uwHolding" placeholder="Holding Costs">
+
+</div>
+
+<div>
+
+<input id="uwArv" placeholder="ARV">
+
+<input id="uwLtv" value="65" placeholder="LTV %">
+
+<input id="uwRate" value="12" placeholder="Interest Rate %">
+
+<input id="uwMonths" value="12" placeholder="Months">
+
+</div>
+
+</div>
+
+<br>
+
+<button class="btn blue"
+onclick="runUnderwriting()">
+
+⚡ Analyze Deal
+
+</button>
+
+<br><br>
+
+<div id="uwResults">
+
+Waiting...
+
+</div>
+
+</div>
+
+<!-- ========================================= -->
+
+<div class="card">
+
+<h2>🏠 MORTGAGE CALCULATOR</h2>
+
+<div class="dashboard">
+
+<div>
+
+<input id="mortgagePrice"
+placeholder="Purchase Price">
+
+<input id="mortgageDown"
+placeholder="Down Payment">
+
+<input id="mortgageRate"
+value="7"
+placeholder="Interest Rate">
+
+</div>
+
+<div>
+
+<input id="mortgageYears"
+value="30"
+placeholder="Term Years">
+
+<input id="mortgageTax"
+placeholder="Monthly Taxes">
+
+<input id="mortgageInsurance"
+placeholder="Monthly Insurance">
+
+</div>
+
+</div>
+
+<br>
+
+<button class="btn green"
+onclick="runMortgage()">
+
+💰 Calculate Mortgage
+
+</button>
+
+<br><br>
+
+<div id="mortgageResults">
+
+Waiting...
+
+</div>
+
+</div>
+
+<!-- ========================================= -->
+
+<div class="card">
+
+<h2>🏘 BRRRR CALCULATOR</h2>
+
+<div class="dashboard">
+
+<div>
+
+<input id="brrrrPurchase"
+placeholder="Purchase">
+
+<input id="brrrrRehab"
+placeholder="Rehab">
+
+</div>
+
+<div>
+
+<input id="brrrrArv"
+placeholder="ARV">
+
+<input id="brrrrRefi"
+value="75"
+placeholder="Refi %">
+
+</div>
+
+</div>
+
+<br>
+
+<button class="btn green"
+onclick="runBRRRR()">
+
+🏘 Calculate BRRRR
+
+</button>
+
+<br><br>
+
+<div id="brrrrResults">
+
+Waiting...
+
+</div>
+
+</div>
+
+<!-- ========================================= -->
+
+<div class="card">
+
+<h2>📈 DSCR CALCULATOR</h2>
+
+<div class="dashboard">
+
+<div>
+
+<input id="dscrRent"
+placeholder="Monthly Rent">
+
+<input id="dscrTaxes"
+placeholder="Taxes">
+
+</div>
+
+<div>
+
+<input id="dscrInsurance"
+placeholder="Insurance">
+
+<input id="dscrDebt"
+placeholder="Mortgage Payment">
+
+</div>
+
+</div>
+
+<br>
+
+<button class="btn green"
+onclick="runDSCR()">
+
+📊 Calculate DSCR
+
+</button>
+
+<br><br>
+
+<div id="dscrResults">
+
+Waiting...
+
+</div>
+
+</div>
+
+<!-- ========================================= -->
+
+<div class="card">
+
+<h2>🏚 FIX & FLIP CALCULATOR</h2>
+
+<div class="dashboard">
+
+<div>
+
+<input id="flipPurchase"
+placeholder="Purchase">
+
+<input id="flipRehab"
+placeholder="Rehab">
+
+<input id="flipHolding"
+placeholder="Holding">
+
+</div>
+
+<div>
+
+<input id="flipClosing"
+placeholder="Closing">
+
+<input id="flipArv"
+placeholder="ARV">
+
+</div>
+
+</div>
+
+<br>
+
+<button class="btn gold"
+onclick="runFlip()">
+
+🏁 Run Flip Analysis
+
+</button>
+
+<br><br>
+
+<div id="flipResults">
+
+Waiting...
+
+</div>
+
+</div>
+
+<!-- ========================================= -->
+
+<div class="card">
+
+<h2>💰 GAP FUNDING CALCULATOR</h2>
+
+<div class="dashboard">
+
+<div>
+
+<input id="gapTotalCost"
+placeholder="Total Project Cost">
+
+</div>
+
+<div>
+
+<input id="gapLoan"
+placeholder="Loan Amount">
+
+</div>
+
+</div>
+
+<br>
+
+<button class="btn blue"
+onclick="runGapFunding()">
+
+💸 Calculate Gap
+
+</button>
+
+<br><br>
+
+<div id="gapResults">
+
+Waiting...
+
+</div>
+
+</div>
+
+<!-- ========================================= -->
+
+<div class="card">
+
+<h2>📊 3-TIER OFFER ENGINE</h2>
+
+<div class="dashboard">
+
+<div>
+
+<input id="offerArv"
+placeholder="ARV">
+
+<input id="offerRepair"
+placeholder="Repairs">
+
+</div>
+
+<div>
+
+<input id="offerProfit"
+value="50000"
+placeholder="Desired Profit">
+
+</div>
+
+</div>
+
+<br>
+
+<button class="btn gold"
+onclick="runOfferEngine()">
+
+⚡ Generate Offers
+
+</button>
+
+<br><br>
+
+<div id="offerResults">
+
+Waiting...
+
+</div>
+
+</div>
+
+<!-- ========================================= -->
+
+<div class="card">
+
+<h2>💳 ASAP CREDIT REPAIR</h2>
+
+<p>
+
+Credit Optimization
+Personal Credit
+Business Credit
+Funding Preparation
+
+</p>
+
+<a class="btn green"
+href="https://portal.asapcreditrepairusa.com/direct-signup/RichardsonLegagneur28158"
+target="_blank">
+
+➕ Submit Client
+
+</a>
+
+<a class="btn blue"
+href="https://portal.asapcreditrepairusa.com/self-signup/RichardsonLegagneur28158"
+target="_blank">
+
+👤 Client Signup
+
+</a>
+
+<a class="btn gold"
+href="https://funnel.asapcreditrepairusa.com/fast-results?affId=RichardsonLegagneur28158"
+target="_blank">
+
+🚀 Marketing Funnel
+
+</a>
+
+</div>
