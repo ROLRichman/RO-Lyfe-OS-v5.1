@@ -1,1 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>RO'Lyfe Funding Machine Pro v5.1</title>
+
+<style>
+
+:root{
+
+--bg:#0b0f14;
+--card:#151c28;
+--card2:#1c2635;
+--blue:#00d4ff;
+--green:#22c55e;
+--gold:#fbbf24;
+--red:#ef4444;
+--white:#ffffff;
+--border:#2b3648;
+
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:var(--bg);
+color:white;
+overflow-x:hidden;
+}
+
+.topbar{
+
+height:70px;
+
+background:#111827;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:0 20px;
+
+border-bottom:1px solid var(--border);
+
+position:sticky;
+
+top:0;
+
+z-index:999;
+
+}
+
+.logo{
+
+font-size:24px;
+font-weight:bold;
+color:var(--blue);
+
+}
+
+.backBtn{
+
+background:var(--blue);
+color:black;
+
+padding:10px 16px;
+
+border:none;
+
+border-radius:10px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+}
+
+.container{
+
+max-width:1600px;
+
+margin:auto;
+
+padding:20px;
+
+}
+
+.card{
+
+background:var(--card);
+
+border:1px solid var(--border);
+
+border-radius:15px;
+
+padding:20px;
+
+margin-bottom:20px;
+
+}
+
+.card h2{
+
+color:var(--blue);
+
+margin-bottom:15px;
+
+}
+
+.card h3{
+
+color:var(--blue);
+
+margin-bottom:10px;
+
+}
+
+.grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(250px,1fr));
+
+gap:15px;
+
+}
+
+input{
+
+width:100%;
+
+padding:12px;
+
+margin-bottom:10px;
+
+background:#0f172a;
+
+border:1px solid var(--border);
+
+border-radius:10px;
+
+color:white;
+
+}
+
+button{
+
+padding:12px 18px;
+
+border:none;
+
+border-radius:10px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+margin:5px;
+
+}
+
+.blue{
+background:var(--blue);
+color:black;
+}
+
+.green{
+background:var(--green);
+color:black;
+}
+
+.gold{
+background:var(--gold);
+color:black;
+}
+
+.output{
+
+background:#0f172a;
+
+padding:15px;
+
+border-radius:10px;
+
+border:1px solid var(--border);
+
+margin-top:15px;
+
+line-height:1.8;
+
+}
+
+.metric{
+
+font-size:28px;
+font-weight:bold;
+color:var(--blue);
+
+}
+
+.fundable{
+
+color:#22c55e;
+font-weight:bold;
+
+}
+
+.review{
+
+color:#ef4444;
+font-weight:bold;
+
+}
+
+.quickGrid{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(200px,1fr));
+
+gap:15px;
+
+margin-top:15px;
+
+}
+
+.quickCard{
+
+background:#111827;
+
+padding:15px;
+
+border-radius:10px;
+
+text-align:center;
+
+border:1px solid var(--border);
+
+}
+
+.quickCard h4{
+
+color:var(--blue);
+
+margin-bottom:8px;
+
+}
+
+@media(max-width:900px){
+
+.grid{
+grid-template-columns:1fr;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="topbar">
+
+<div class="logo">
+
+🏦 RO'Lyfe Funding Machine Pro
+
+</div>
+
+<button
+class="backBtn"
+onclick="window.location.href='../'">
+
+← Dashboard
+
+</button>
+
+</div>
+
+<div class="container">
+
+<!-- HERO -->
+
+<div class="card">
+
+<h2>🏦 Funding Command Center</h2>
+
+<p>
+
+Analyze deals before underwriting.
+
+Calculate:
+
+Cash-To-Close
+
+Gap Funding
+
+Hard Money
+
+Profit
+
+ROI
+
+DSCR
+
+BRRRR
+
+Mortgage Payments
+
+and Overall Deal Viability.
+
+</p>
+
+</div>
+
+<!-- QUICK METRICS -->
+
+<div class="quickGrid">
+
+<div class="quickCard">
+
+<h4>Loan Amount</h4>
+
+<div
+class="metric"
+id="loanMetric">
+
+$0
+
+</div>
+
+</div>
+
+<div class="quickCard">
+
+<h4>Cash To Close</h4>
+
+<div
+class="metric"
+id="cashMetric">
+
+$0
+
+</div>
+
+</div>
+
+<div class="quickCard">
+
+<h4>Projected Profit</h4>
+
+<div
+class="metric"
+id="profitMetric">
+
+$0
+
+</div>
+
+</div>
+
+<div class="quickCard">
+
+<h4>Status</h4>
+
+<div
+class="metric"
+id="statusMetric">
+
+WAITING
+
+</div>
+
+</div>
+
+</div>
+
+<!-- FUNDING MACHINE -->
+
+<div class="card">
+
+<h2>⚡ RO'Lyfe Funding Machine</h2>
+
+<p>
+
+ARV → HML → Gap → Cash-To-Close → Profit
+
+</p>
+
+<div class="grid">
+
+<div>
+
+<input
+id="arv"
+placeholder="ARV">
+
+<input
+id="purchase"
+placeholder="Purchase Price">
+
+<input
+id="rehab"
+placeholder="Rehab Budget">
+
+<input
+id="assignment"
+placeholder="Assignment Fee">
+
+</div>
+
+<div>
+
+<input
+id="closing"
+placeholder="Closing Costs">
+
+<input
+id="holding"
+placeholder="Holding Costs">
+
+<input
+id="ltv"
+value="65"
+placeholder="LTV %">
+
+<input
+id="months"
+value="12"
+placeholder="Months">
+
+</div>
+
+<div>
+
+<input
+id="rate"
+value="12"
+placeholder="Interest Rate %">
+
+<input
+id="points"
+value="3"
+placeholder="Points %">
+
+<input
+id="realtor"
+value="3"
+placeholder="Realtor %">
+
+<input
+id="resaleClosing"
+value="1.5"
+placeholder="Resale Closing %">
+
+</div>
+
+</div>
+
+<br>
+
+<button
+class="green"
+onclick="runFundingMachine()">
+
+⚡ Analyze Deal
+
+</button>
+
+<div
+id="fundingResults"
+class="output">
+
+Waiting For Analysis...
+
+</div>
+
+</div>
