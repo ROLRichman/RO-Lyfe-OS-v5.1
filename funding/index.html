@@ -487,6 +487,1091 @@ class="output">
 
 Waiting For Analysis...
 
+  <!-- ========================================= -->
+<!-- REAL ESTATE FUNDING -->
+<!-- ========================================= -->
+
+<div class="card">
+
+<h2>🏠 Real Estate Funding Analysis</h2>
+
+<div class="dashboard">
+
+<div>
+
+<input id="purchasePrice"
+placeholder="Purchase Price">
+
+<input id="rehabBudget"
+placeholder="Rehab Budget">
+
+<input id="arv"
+placeholder="ARV">
+
+<input id="closingCosts"
+placeholder="Closing Costs">
+
+</div>
+
+<div>
+
+<input id="ltv"
+value="65"
+placeholder="LTV %">
+
+<input id="rate"
+value="12"
+placeholder="Rate %">
+
+<input id="months"
+value="12"
+placeholder="Months">
+
+<input id="holdingCosts"
+placeholder="Holding Costs">
+
 </div>
 
 </div>
+
+<br>
+
+<button
+class="btn green"
+onclick="runFundingAnalysis()">
+
+🏦 Analyze Funding
+
+</button>
+
+<br><br>
+
+<div id="fundingResults">
+
+Waiting...
+
+</div>
+
+</div>
+
+<!-- ========================================= -->
+<!-- CASH TO CLOSE -->
+<!-- ========================================= -->
+
+<div class="card">
+
+<h2>💵 Cash To Close Calculator</h2>
+
+<div class="dashboard">
+
+<div>
+
+<input id="ctcPurchase"
+placeholder="Purchase">
+
+<input id="ctcRehab"
+placeholder="Rehab">
+
+<input id="ctcClosing"
+placeholder="Closing">
+
+</div>
+
+<div>
+
+<input id="ctcLoan"
+placeholder="Loan Amount">
+
+<input id="ctcGap"
+placeholder="Gap Loan">
+
+</div>
+
+</div>
+
+<br>
+
+<button
+class="btn gold"
+onclick="runCashToClose()">
+
+💰 Calculate
+
+</button>
+
+<br><br>
+
+<div id="ctcResults">
+
+Waiting...
+
+</div>
+
+</div>
+
+<!-- ========================================= -->
+<!-- FIX & FLIP PRO -->
+<!-- ========================================= -->
+
+<div class="card">
+
+<h2>🏚 Fix & Flip Pro Analyzer</h2>
+
+<div class="dashboard">
+
+<div>
+
+<input id="flipPurchase2"
+placeholder="Purchase">
+
+<input id="flipRehab2"
+placeholder="Rehab">
+
+<input id="flipHolding2"
+placeholder="Holding">
+
+</div>
+
+<div>
+
+<input id="flipClosing2"
+placeholder="Closing">
+
+<input id="flipArv2"
+placeholder="ARV">
+
+<input id="flipCommission2"
+value="6"
+placeholder="Realtor %">
+
+</div>
+
+</div>
+
+<br>
+
+<button
+class="btn blue"
+onclick="runFlipPro()">
+
+📈 Run Analysis
+
+</button>
+
+<br><br>
+
+<div id="flipProResults">
+
+Waiting...
+
+</div>
+
+</div>
+
+<!-- ========================================= -->
+<!-- RENTAL ANALYZER -->
+<!-- ========================================= -->
+
+<div class="card">
+
+<h2>🏘 Rental Cash Flow Analyzer</h2>
+
+<div class="dashboard">
+
+<div>
+
+<input id="rentIncome"
+placeholder="Monthly Rent">
+
+<input id="rentMortgage"
+placeholder="Mortgage">
+
+<input id="rentTaxes"
+placeholder="Taxes">
+
+</div>
+
+<div>
+
+<input id="rentInsurance"
+placeholder="Insurance">
+
+<input id="rentMaintenance"
+placeholder="Maintenance">
+
+<input id="rentVacancy"
+placeholder="Vacancy Reserve">
+
+</div>
+
+</div>
+
+<br>
+
+<button
+class="btn green"
+onclick="runRentalAnalyzer()">
+
+🏘 Analyze Rental
+
+</button>
+
+<br><br>
+
+<div id="rentalResults">
+
+Waiting...
+
+</div>
+
+</div>
+
+<!-- ========================================= -->
+<!-- SCRIPT PART 2 -->
+<!-- ========================================= -->
+
+<script>
+
+function runFundingAnalysis(){
+
+let purchase =
+Number(document.getElementById("purchasePrice").value)||0;
+
+let rehab =
+Number(document.getElementById("rehabBudget").value)||0;
+
+let arv =
+Number(document.getElementById("arv").value)||0;
+
+let closing =
+Number(document.getElementById("closingCosts").value)||0;
+
+let holding =
+Number(document.getElementById("holdingCosts").value)||0;
+
+let ltv =
+(Number(document.getElementById("ltv").value)||65)/100;
+
+let rate =
+(Number(document.getElementById("rate").value)||12)/100;
+
+let months =
+Number(document.getElementById("months").value)||12;
+
+let totalCost =
+purchase +
+rehab +
+closing +
+holding;
+
+let loan =
+arv * ltv;
+
+let interest =
+loan * rate * (months/12);
+
+let cashToClose =
+totalCost - loan;
+
+let profit =
+arv -
+totalCost -
+interest;
+
+document.getElementById(
+"fundingResults"
+).innerHTML = `
+
+<b>Total Cost</b><br>
+$${totalCost.toLocaleString()}
+
+<hr>
+
+<b>Loan Amount</b><br>
+$${loan.toLocaleString()}
+
+<hr>
+
+<b>Cash To Close</b><br>
+$${cashToClose.toLocaleString()}
+
+<hr>
+
+<b>Interest</b><br>
+$${interest.toLocaleString()}
+
+<hr>
+
+<b>Projected Profit</b><br>
+$${profit.toLocaleString()}
+
+`;
+
+}
+
+function runCashToClose(){
+
+let purchase =
+Number(document.getElementById("ctcPurchase").value)||0;
+
+let rehab =
+Number(document.getElementById("ctcRehab").value)||0;
+
+let closing =
+Number(document.getElementById("ctcClosing").value)||0;
+
+let loan =
+Number(document.getElementById("ctcLoan").value)||0;
+
+let gap =
+Number(document.getElementById("ctcGap").value)||0;
+
+let total =
+purchase +
+rehab +
+closing;
+
+let credits =
+loan + gap;
+
+let cash =
+total - credits;
+
+document.getElementById(
+"ctcResults"
+).innerHTML = `
+
+<b>Total Project Cost</b><br>
+$${total.toLocaleString()}
+
+<hr>
+
+<b>Total Credits</b><br>
+$${credits.toLocaleString()}
+
+<hr>
+
+<b>Cash To Close</b><br>
+$${cash.toLocaleString()}
+
+`;
+
+}
+
+function runFlipPro(){
+
+let purchase =
+Number(document.getElementById("flipPurchase2").value)||0;
+
+let rehab =
+Number(document.getElementById("flipRehab2").value)||0;
+
+let holding =
+Number(document.getElementById("flipHolding2").value)||0;
+
+let closing =
+Number(document.getElementById("flipClosing2").value)||0;
+
+let arv =
+Number(document.getElementById("flipArv2").value)||0;
+
+let commission =
+(Number(document.getElementById("flipCommission2").value)||6)/100;
+
+let saleCosts =
+arv * commission;
+
+let totalCost =
+purchase +
+rehab +
+holding +
+closing +
+saleCosts;
+
+let profit =
+arv - totalCost;
+
+let roi =
+(totalCost > 0)
+? (profit/totalCost)*100
+: 0;
+
+document.getElementById(
+"flipProResults"
+).innerHTML = `
+
+<b>Total Cost</b><br>
+$${totalCost.toLocaleString()}
+
+<hr>
+
+<b>Profit</b><br>
+$${profit.toLocaleString()}
+
+<hr>
+
+<b>ROI</b><br>
+${roi.toFixed(2)}%
+
+`;
+
+}
+
+function runRentalAnalyzer(){
+
+let rent =
+Number(document.getElementById("rentIncome").value)||0;
+
+let mortgage =
+Number(document.getElementById("rentMortgage").value)||0;
+
+let taxes =
+Number(document.getElementById("rentTaxes").value)||0;
+
+let insurance =
+Number(document.getElementById("rentInsurance").value)||0;
+
+let maintenance =
+Number(document.getElementById("rentMaintenance").value)||0;
+
+let vacancy =
+Number(document.getElementById("rentVacancy").value)||0;
+
+let expenses =
+mortgage +
+taxes +
+insurance +
+maintenance +
+vacancy;
+
+let cashflow =
+rent - expenses;
+
+document.getElementById(
+"rentalResults"
+).innerHTML = `
+
+<b>Total Expenses</b><br>
+$${expenses.toLocaleString()}
+
+<hr>
+
+<b>Monthly Cash Flow</b><br>
+$${cashflow.toLocaleString()}
+
+<hr>
+
+<b>Status</b><br>
+${cashflow > 0 ? "✅ Positive" : "⚠ Negative"}
+
+`;
+
+}
+
+</script>
+  
+</div>
+
+</div>
+
+<!-- ========================================= -->
+<!-- SBA LOAN CALCULATOR -->
+<!-- ========================================= -->
+
+<div class="card">
+
+<h2>🏛 SBA Loan Calculator</h2>
+
+<div class="dashboard">
+
+<div>
+
+<input id="sbaLoan"
+placeholder="Loan Amount">
+
+<input id="sbaRate"
+value="10"
+placeholder="Interest Rate %">
+
+</div>
+
+<div>
+
+<input id="sbaYears"
+value="10"
+placeholder="Term Years">
+
+</div>
+
+</div>
+
+<br>
+
+<button
+class="btn green"
+onclick="runSBA()">
+
+🏛 Calculate SBA
+
+</button>
+
+<br><br>
+
+<div id="sbaResults">
+
+Waiting...
+
+</div>
+
+</div>
+
+<!-- ========================================= -->
+<!-- BUSINESS TERM LOAN -->
+<!-- ========================================= -->
+
+<div class="card">
+
+<h2>🏢 Business Loan Calculator</h2>
+
+<div class="dashboard">
+
+<div>
+
+<input id="bizLoan"
+placeholder="Loan Amount">
+
+<input id="bizRate"
+value="15"
+placeholder="Rate %">
+
+</div>
+
+<div>
+
+<input id="bizMonths"
+value="60"
+placeholder="Months">
+
+</div>
+
+</div>
+
+<br>
+
+<button
+class="btn blue"
+onclick="runBusinessLoan()">
+
+💼 Calculate Loan
+
+</button>
+
+<br><br>
+
+<div id="bizResults">
+
+Waiting...
+
+</div>
+
+</div>
+
+<!-- ========================================= -->
+<!-- MCA CALCULATOR -->
+<!-- ========================================= -->
+
+<div class="card">
+
+<h2>⚡ MCA Calculator</h2>
+
+<div class="dashboard">
+
+<div>
+
+<input id="mcaAdvance"
+placeholder="Advance Amount">
+
+<input id="mcaFactor"
+value="1.35"
+placeholder="Factor Rate">
+
+</div>
+
+<div>
+
+<input id="mcaDaily"
+placeholder="Daily Payment">
+
+</div>
+
+</div>
+
+<br>
+
+<button
+class="btn gold"
+onclick="runMCA()">
+
+⚡ Calculate MCA
+
+</button>
+
+<br><br>
+
+<div id="mcaResults">
+
+Waiting...
+
+</div>
+
+</div>
+
+<!-- ========================================= -->
+<!-- LINE OF CREDIT -->
+<!-- ========================================= -->
+
+<div class="card">
+
+<h2>🏦 Line Of Credit Calculator</h2>
+
+<div class="dashboard">
+
+<div>
+
+<input id="locLimit"
+placeholder="Credit Limit">
+
+<input id="locUsed"
+placeholder="Amount Used">
+
+</div>
+
+<div>
+
+<input id="locRate"
+value="12"
+placeholder="Rate %">
+
+</div>
+
+</div>
+
+<br>
+
+<button
+class="btn green"
+onclick="runLOC()">
+
+🏦 Analyze LOC
+
+</button>
+
+<br><br>
+
+<div id="locResults">
+
+Waiting...
+
+</div>
+
+</div>
+
+<!-- ========================================= -->
+<!-- DEAL PACKAGING SCORE -->
+<!-- ========================================= -->
+
+<div class="card">
+
+<h2>📦 Deal Packaging Score</h2>
+
+<p>
+
+Check readiness before submitting
+to lenders or investors.
+
+</p>
+
+<label>
+<input type="checkbox" id="pkgApp">
+ Application Complete
+</label>
+
+<br>
+
+<label>
+<input type="checkbox" id="pkgCredit">
+ Credit Pulled
+</label>
+
+<br>
+
+<label>
+<input type="checkbox" id="pkgIncome">
+ Income Verified
+</label>
+
+<br>
+
+<label>
+<input type="checkbox" id="pkgBank">
+ Bank Statements
+</label>
+
+<br>
+
+<label>
+<input type="checkbox" id="pkgContract">
+ Purchase Contract
+</label>
+
+<br>
+
+<label>
+<input type="checkbox" id="pkgScope">
+ Rehab Scope
+</label>
+
+<br><br>
+
+<button
+class="btn gold"
+onclick="runPackageScore()">
+
+📊 Score Package
+
+</button>
+
+<br><br>
+
+<div id="packageResults">
+
+Waiting...
+
+</div>
+
+</div>
+
+<!-- ========================================= -->
+<!-- CREDIT REPAIR CENTER -->
+<!-- ========================================= -->
+
+<div class="card">
+
+<h2>💳 ASAP Credit Repair Center</h2>
+
+<p>
+
+Use credit optimization to increase
+fundability and improve approvals.
+
+</p>
+
+<a
+class="btn green"
+href="https://portal.asapcreditrepairusa.com/direct-signup/RichardsonLegagneur28158"
+target="_blank">
+
+➕ Submit Client
+
+</a>
+
+<a
+class="btn blue"
+href="https://portal.asapcreditrepairusa.com/self-signup/RichardsonLegagneur28158"
+target="_blank">
+
+👤 Client Portal
+
+</a>
+
+<a
+class="btn gold"
+href="https://funnel.asapcreditrepairusa.com/fast-results?affId=RichardsonLegagneur28158"
+target="_blank">
+
+🚀 Marketing Funnel
+
+</a>
+
+</div>
+
+<!-- ========================================= -->
+<!-- ATLAS FUNDING ENGINE -->
+<!-- ========================================= -->
+
+<div class="card">
+
+<h2>🤖 Atlas Funding Recommendation Engine</h2>
+
+<p>
+
+Atlas reviews revenue,
+credit, collateral,
+cash flow and deal strength.
+
+</p>
+
+<div class="dashboard">
+
+<div>
+
+<input id="atlasCredit"
+placeholder="Credit Score">
+
+<input id="atlasRevenue"
+placeholder="Monthly Revenue">
+
+</div>
+
+<div>
+
+<input id="atlasCollateral"
+placeholder="Collateral Value">
+
+</div>
+
+</div>
+
+<br>
+
+<button
+class="btn blue"
+onclick="runAtlasFunding()">
+
+🤖 Analyze Borrower
+
+</button>
+
+<br><br>
+
+<div id="atlasFundingResults">
+
+Waiting...
+
+</div>
+
+</div>
+
+<script>
+
+/* SBA */
+
+function runSBA(){
+
+let loan=
+Number(document.getElementById("sbaLoan").value)||0;
+
+let rate=
+(Number(document.getElementById("sbaRate").value)||10)/100/12;
+
+let years=
+Number(document.getElementById("sbaYears").value)||10;
+
+let n=years*12;
+
+let payment=
+(loan*rate*Math.pow(1+rate,n))/
+(Math.pow(1+rate,n)-1);
+
+document.getElementById(
+"sbaResults"
+).innerHTML=`
+
+<b>Monthly Payment</b><br>
+$${payment.toFixed(2)}
+
+`;
+
+}
+
+/* BUSINESS LOAN */
+
+function runBusinessLoan(){
+
+let loan=
+Number(document.getElementById("bizLoan").value)||0;
+
+let rate=
+(Number(document.getElementById("bizRate").value)||15)/100/12;
+
+let months=
+Number(document.getElementById("bizMonths").value)||60;
+
+let payment=
+(loan*rate*Math.pow(1+rate,months))/
+(Math.pow(1+rate,months)-1);
+
+document.getElementById(
+"bizResults"
+).innerHTML=`
+
+<b>Monthly Payment</b><br>
+$${payment.toFixed(2)}
+
+`;
+
+}
+
+/* MCA */
+
+function runMCA(){
+
+let advance=
+Number(document.getElementById("mcaAdvance").value)||0;
+
+let factor=
+Number(document.getElementById("mcaFactor").value)||1.35;
+
+let daily=
+Number(document.getElementById("mcaDaily").value)||0;
+
+let payback=
+advance*factor;
+
+let days=
+daily>0
+? payback/daily
+: 0;
+
+document.getElementById(
+"mcaResults"
+).innerHTML=`
+
+<b>Total Payback</b><br>
+$${payback.toLocaleString()}
+
+<hr>
+
+<b>Estimated Days</b><br>
+${days.toFixed(0)}
+
+`;
+
+}
+
+/* LOC */
+
+function runLOC(){
+
+let limit=
+Number(document.getElementById("locLimit").value)||0;
+
+let used=
+Number(document.getElementById("locUsed").value)||0;
+
+let rate=
+Number(document.getElementById("locRate").value)||12;
+
+let available=
+limit-used;
+
+let util=
+limit>0
+? (used/limit)*100
+: 0;
+
+document.getElementById(
+"locResults"
+).innerHTML=`
+
+<b>Available Credit</b><br>
+$${available.toLocaleString()}
+
+<hr>
+
+<b>Utilization</b><br>
+${util.toFixed(2)}%
+
+<hr>
+
+<b>Rate</b><br>
+${rate}%
+
+`;
+
+}
+
+/* PACKAGE SCORE */
+
+function runPackageScore(){
+
+let score=0;
+
+if(pkgApp.checked)score++;
+if(pkgCredit.checked)score++;
+if(pkgIncome.checked)score++;
+if(pkgBank.checked)score++;
+if(pkgContract.checked)score++;
+if(pkgScope.checked)score++;
+
+let pct=(score/6)*100;
+
+document.getElementById(
+"packageResults"
+).innerHTML=`
+
+<b>Readiness Score</b><br>
+${pct.toFixed(0)}%
+
+<hr>
+
+<b>Status</b><br>
+${pct>=80 ? "✅ Ready To Submit" : "⚠ Needs Documents"}
+
+`;
+
+}
+
+/* ATLAS */
+
+function runAtlasFunding(){
+
+let credit=
+Number(document.getElementById("atlasCredit").value)||0;
+
+let revenue=
+Number(document.getElementById("atlasRevenue").value)||0;
+
+let collateral=
+Number(document.getElementById("atlasCollateral").value)||0;
+
+let recommendation="";
+
+if(credit>=680 && revenue>=10000){
+
+recommendation=
+"✅ SBA / Bank Financing";
+
+}
+else if(collateral>100000){
+
+recommendation=
+"🏠 Asset Based Lending";
+
+}
+else if(revenue>=5000){
+
+recommendation=
+"⚡ Revenue Funding";
+
+}
+else{
+
+recommendation=
+"💳 Credit Improvement Recommended";
+
+}
+
+document.getElementById(
+"atlasFundingResults"
+).innerHTML=`
+
+<b>Atlas Recommendation</b><br>
+${recommendation}
+
+`;
+
+}
+
+</script>
+  
