@@ -554,7 +554,6 @@ now.toLocaleTimeString();
 
 </body>
 </html>
-
 <!-- ========================================= -->
 <!-- PART 2 : CALCULATOR CENTER -->
 <!-- ========================================= -->
@@ -955,3 +954,409 @@ target="_blank">
 </a>
 
 </div>
+
+<script>
+
+/* =========================================
+UNDERWRITING ENGINE
+========================================= */
+
+function runUnderwriting(){
+
+let purchase =
+Number(document.getElementById("uwPurchase").value)||0;
+
+let rehab =
+Number(document.getElementById("uwRehab").value)||0;
+
+let assignment =
+Number(document.getElementById("uwAssignment").value)||0;
+
+let closing =
+Number(document.getElementById("uwClosing").value)||0;
+
+let holding =
+Number(document.getElementById("uwHolding").value)||0;
+
+let arv =
+Number(document.getElementById("uwArv").value)||0;
+
+let ltv =
+(Number(document.getElementById("uwLtv").value)||65)/100;
+
+let rate =
+(Number(document.getElementById("uwRate").value)||12)/100;
+
+let months =
+Number(document.getElementById("uwMonths").value)||12;
+
+let totalCost =
+purchase +
+rehab +
+assignment +
+closing +
+holding;
+
+let loan =
+arv * ltv;
+
+let cashToClose =
+totalCost - loan;
+
+let interest =
+loan * rate * (months/12);
+
+let profit =
+arv -
+totalCost -
+interest;
+
+let verdict =
+profit > 30000
+? "✅ FUNDABLE"
+: "⚠ REVIEW";
+
+document.getElementById(
+"uwResults"
+).innerHTML = `
+
+<b>Total Project Cost</b><br>
+$${totalCost.toLocaleString()}
+
+<hr>
+
+<b>Loan Amount</b><br>
+$${loan.toLocaleString()}
+
+<hr>
+
+<b>Cash To Close</b><br>
+$${cashToClose.toLocaleString()}
+
+<hr>
+
+<b>Interest Cost</b><br>
+$${interest.toLocaleString()}
+
+<hr>
+
+<b>Projected Profit</b><br>
+$${profit.toLocaleString()}
+
+<hr>
+
+<b>Decision</b><br>
+${verdict}
+
+`;
+
+}
+
+/* =========================================
+MORTGAGE CALCULATOR
+========================================= */
+
+function runMortgage(){
+
+let price =
+Number(document.getElementById("mortgagePrice").value)||0;
+
+let down =
+Number(document.getElementById("mortgageDown").value)||0;
+
+let rate =
+(Number(document.getElementById("mortgageRate").value)||0)/100/12;
+
+let years =
+Number(document.getElementById("mortgageYears").value)||30;
+
+let tax =
+Number(document.getElementById("mortgageTax").value)||0;
+
+let insurance =
+Number(document.getElementById("mortgageInsurance").value)||0;
+
+let loan =
+price - down;
+
+let n =
+years * 12;
+
+let payment =
+
+(loan*rate*Math.pow(1+rate,n))/
+(Math.pow(1+rate,n)-1);
+
+if(!isFinite(payment))
+payment = 0;
+
+let total =
+payment + tax + insurance;
+
+document.getElementById(
+"mortgageResults"
+).innerHTML = `
+
+<b>Loan Amount</b><br>
+$${loan.toLocaleString()}
+
+<hr>
+
+<b>P&I Payment</b><br>
+$${payment.toFixed(2)}
+
+<hr>
+
+<b>Total Payment</b><br>
+$${total.toFixed(2)}
+
+`;
+
+}
+
+/* =========================================
+BRRRR CALCULATOR
+========================================= */
+
+function runBRRRR(){
+
+let purchase =
+Number(document.getElementById("brrrrPurchase").value)||0;
+
+let rehab =
+Number(document.getElementById("brrrrRehab").value)||0;
+
+let arv =
+Number(document.getElementById("brrrrArv").value)||0;
+
+let refi =
+(Number(document.getElementById("brrrrRefi").value)||75)/100;
+
+let invested =
+purchase + rehab;
+
+let refiLoan =
+arv * refi;
+
+let cashBack =
+refiLoan - invested;
+
+let equity =
+arv - refiLoan;
+
+document.getElementById(
+"brrrrResults"
+).innerHTML = `
+
+<b>Total Invested</b><br>
+$${invested.toLocaleString()}
+
+<hr>
+
+<b>Refi Loan</b><br>
+$${refiLoan.toLocaleString()}
+
+<hr>
+
+<b>Cash Back</b><br>
+$${cashBack.toLocaleString()}
+
+<hr>
+
+<b>Remaining Equity</b><br>
+$${equity.toLocaleString()}
+
+`;
+
+}
+
+/* =========================================
+DSCR CALCULATOR
+========================================= */
+
+function runDSCR(){
+
+let rent =
+Number(document.getElementById("dscrRent").value)||0;
+
+let tax =
+Number(document.getElementById("dscrTaxes").value)||0;
+
+let insurance =
+Number(document.getElementById("dscrInsurance").value)||0;
+
+let debt =
+Number(document.getElementById("dscrDebt").value)||0;
+
+let noi =
+rent - tax - insurance;
+
+let dscr =
+debt > 0
+? noi / debt
+: 0;
+
+let result =
+dscr >= 1.25
+? "✅ PASS"
+: "⚠ FAIL";
+
+document.getElementById(
+"dscrResults"
+).innerHTML = `
+
+<b>NOI</b><br>
+$${noi.toFixed(2)}
+
+<hr>
+
+<b>DSCR</b><br>
+${dscr.toFixed(2)}
+
+<hr>
+
+<b>Status</b><br>
+${result}
+
+`;
+
+}
+
+/* =========================================
+FIX & FLIP
+========================================= */
+
+function runFlip(){
+
+let purchase =
+Number(document.getElementById("flipPurchase").value)||0;
+
+let rehab =
+Number(document.getElementById("flipRehab").value)||0;
+
+let holding =
+Number(document.getElementById("flipHolding").value)||0;
+
+let closing =
+Number(document.getElementById("flipClosing").value)||0;
+
+let arv =
+Number(document.getElementById("flipArv").value)||0;
+
+let cost =
+purchase +
+rehab +
+holding +
+closing;
+
+let profit =
+arv - cost;
+
+let roi =
+cost > 0
+? (profit / cost) * 100
+: 0;
+
+document.getElementById(
+"flipResults"
+).innerHTML = `
+
+<b>Total Cost</b><br>
+$${cost.toLocaleString()}
+
+<hr>
+
+<b>Profit</b><br>
+$${profit.toLocaleString()}
+
+<hr>
+
+<b>ROI</b><br>
+${roi.toFixed(2)}%
+
+`;
+
+}
+
+/* =========================================
+GAP FUNDING
+========================================= */
+
+function runGapFunding(){
+
+let total =
+Number(document.getElementById("gapTotalCost").value)||0;
+
+let loan =
+Number(document.getElementById("gapLoan").value)||0;
+
+let gap =
+total - loan;
+
+let gapPct =
+total > 0
+? (gap/total)*100
+: 0;
+
+document.getElementById(
+"gapResults"
+).innerHTML = `
+
+<b>Gap Amount</b><br>
+$${gap.toLocaleString()}
+
+<hr>
+
+<b>Gap Percentage</b><br>
+${gapPct.toFixed(2)}%
+
+`;
+
+}
+
+/* =========================================
+3-TIER OFFER ENGINE
+========================================= */
+
+function runOfferEngine(){
+
+let arv =
+Number(document.getElementById("offerArv").value)||0;
+
+let repairs =
+Number(document.getElementById("offerRepair").value)||0;
+
+let profit =
+Number(document.getElementById("offerProfit").value)||50000;
+
+let cashOffer =
+(arv * .50) - repairs - profit;
+
+let sellerCarry =
+(arv * .65);
+
+let sellerFinance =
+(arv * .75);
+
+document.getElementById(
+"offerResults"
+).innerHTML = `
+
+<b>All Cash Offer</b><br>
+$${cashOffer.toLocaleString()}
+
+<hr>
+
+<b>Seller Carry</b><br>
+$${sellerCarry.toLocaleString()}
+
+<hr>
+
+<b>Seller Finance</b><br>
+$${sellerFinance.toLocaleString()}
+
+`;
+
+}
+
+  </script>
